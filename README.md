@@ -19,7 +19,7 @@ TODO
 ```go
 package main
 
-import "github.com/rblockchain/gm/sm3"
+import "github.com/rongzer/gm/sm3"
 
 func main() {
     // 用法1
