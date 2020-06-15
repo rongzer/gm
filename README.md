@@ -1,6 +1,6 @@
 # GM SM2/3/4 library based on Golang
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-<a href="https://godoc.org/github.com/rblockchain/gm"><img alt="GoDoc" src="https://godoc.org/github.com/rblockchain/gm?status.svg" /></a>
+<a href="https://godoc.org/github.com/rongzer/gm"><img alt="GoDoc" src="https://godoc.org/github.com/rongzer/gm?status.svg" /></a>
 
 基于Go语言的国密SM2/SM3/SM4加密算法库
 
