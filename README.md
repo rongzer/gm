@@ -37,7 +37,7 @@ func main() {
 ```
 goos: darwin
 goarch: amd64
-pkg: github.com/rblockchain/gm/sm3
+pkg: github.com/rongzer/gm/sm3
 BenchmarkSM3: bench using bytes with 444 length
 BenchmarkSM3/sha256
 BenchmarkSM3/sha256-8         	  735931	      1545 ns/op	       0 B/op	       0 allocs/op
