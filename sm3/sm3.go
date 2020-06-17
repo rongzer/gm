@@ -18,7 +18,7 @@ import (
 // The Size of a SM3 checksum in bytes.
 const Size = 32
 
-// The blockGeneric size of SM3 in bytes.
+// The block size of SM3 in bytes.
 const BlockSize = 64
 
 const (
@@ -40,39 +40,42 @@ func New() hash.Hash {
 }
 
 // SumSM3 returns the SM3 checksum of the data.
-func SumSM3(data []byte) []byte {
+func SumSM3(data []byte) [32]byte {
 	var d digest
 	d.Reset()
 	_, _ = d.Write(data)
-	return d.Sum(nil)
+	return d.checkSum()
 }
 
 type digest struct {
 	h   [8]uint32
-	x   [BlockSize]byte
+	x   [64]byte
 	nx  int
 	len uint64
 }
 
-func (d *digest) checkSum() (digest [Size]byte) {
+func (d *digest) checkSum() [Size]byte {
 	n := d.nx
 
-	var k [BlockSize]byte
+	var k [64]byte
 	copy(k[:], d.x[:n])
 
 	k[n] = 0x80
 	if n >= 56 {
-		d.h = blockGeneric(k[:], d.h)
-		for i := 0; i < BlockSize; i++ {
+		blockGeneric(d, k[:])
+		for i := 0; i < 64; i++ {
 			k[i] = 0
 		}
 	}
 	binary.BigEndian.PutUint64(k[56:64], d.len<<3)
-	d.h = blockGeneric(k[:], d.h)
+	blockGeneric(d, k[:])
+
+	var digest [Size]byte
+
 	for i := 0; i < 8; i++ {
 		binary.BigEndian.PutUint32(digest[i*4:i*4+4], d.h[i])
 	}
-	return
+	return digest
 }
 
 func (d *digest) BlockSize() int { return BlockSize }
@@ -100,14 +103,14 @@ func (d *digest) Write(p []byte) (nn int, err error) {
 		n := copy(d.x[d.nx:], p)
 		d.nx += n
 		if d.nx == BlockSize {
-			d.h = block(d.x[:], d.h)
+			blockGeneric(d, d.x[:])
 			d.nx = 0
 		}
 		p = p[n:]
 	}
 	if len(p) >= BlockSize {
 		n := len(p) &^ (BlockSize - 1)
-		d.h = block(p[:n], d.h)
+		blockGeneric(d, p[:n])
 		p = p[n:]
 	}
 	if len(p) > 0 {

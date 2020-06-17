@@ -11,8 +11,13 @@
 package sm3
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"testing"
+
+	// flyinox "github.com/flyinox/crypto/sm/sm3"
+	// mixbee "github.com/mixbee/mixbee-crypto/sm3"
+	// tjfoc "github.com/tjfoc/gmsm/sm3"
 )
 
 type sm3Test struct {
@@ -40,7 +45,8 @@ var cases = []sm3Test{
 
 func TestSm3Sum(t *testing.T) {
 	for i := range cases {
-		if cases[i].out != hex.EncodeToString(SumSM3([]byte(cases[i].in))) {
+		d := SumSM3([]byte(cases[i].in))
+		if cases[i].out != hex.EncodeToString(d[:]) {
 			t.Errorf("%s hash not match", cases[i].in)
 		}
 	}
@@ -48,9 +54,40 @@ func TestSm3Sum(t *testing.T) {
 
 func BenchmarkSM3(b *testing.B) {
 	in := []byte(cases[13].in)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		SumSM3(in)
-	}
+	b.Logf("bench using bytes with %d length", len(in))
+	b.Run("sha256", func(b *testing.B) {
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			sha256.Sum256(in)
+		}
+	})
+	b.Run("rongzer-sm3", func(b *testing.B) {
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			SumSM3(in)
+		}
+	})
+	//b.Run("mixbee-sm3", func(b *testing.B) {
+	//	b.ReportAllocs()
+	//	b.ResetTimer()
+	//	for i := 0; i < b.N; i++ {
+	//		mixbee.Sum(in)
+	//	}
+	//})
+	//b.Run("tjfoc-sm3", func(b *testing.B) {
+	//	b.ReportAllocs()
+	//	b.ResetTimer()
+	//	for i := 0; i < b.N; i++ {
+	//		tjfoc.Sm3Sum(in)
+	//	}
+	//})
+	//b.Run("flyinox-sm3", func(b *testing.B) {
+	//	b.ReportAllocs()
+	//	b.ResetTimer()
+	//	for i := 0; i < b.N; i++ {
+	//		flyinox.SumSM3(in)
+	//	}
+	//})
 }

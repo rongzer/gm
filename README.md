@@ -38,17 +38,18 @@ func main() {
 goos: darwin
 goarch: amd64
 pkg: github.com/rongzer/gm/sm3
-BenchmarkSM3: bench using bytes with 444 length
+BenchmarkSM3
+    BenchmarkSM3: sm3_test.go:57: bench using bytes with 444 length
 BenchmarkSM3/sha256
-BenchmarkSM3/sha256-8         	  735931	      1545 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSM3/sha256-8         	  745774	      1517 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSM3/rongzer-sm3
-BenchmarkSM3/rongzer-sm3-8    	  306820	      3741 ns/op	      32 B/op	       1 allocs/op
+BenchmarkSM3/rongzer-sm3-8    	  423534	      2662 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSM3/mixbee-sm3
-BenchmarkSM3/mixbee-sm3-8     	  197480	      5785 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSM3/mixbee-sm3-8     	  196801	      5661 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSM3/tjfoc-sm3
-BenchmarkSM3/tjfoc-sm3-8      	  208290	      5428 ns/op	     608 B/op	       3 allocs/op
+BenchmarkSM3/tjfoc-sm3-8      	  212660	      5474 ns/op	     608 B/op	       3 allocs/op
 BenchmarkSM3/flyinox-sm3
-BenchmarkSM3/flyinox-sm3-8    	  275706	      4258 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSM3/flyinox-sm3-8    	  274503	      4279 ns/op	       0 B/op	       0 allocs/op
 ```
 
 ## SM4
