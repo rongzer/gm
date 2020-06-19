@@ -52,6 +52,63 @@ BenchmarkSM3/flyinox-sm3
 BenchmarkSM3/flyinox-sm3-8    	  274503	      4279 ns/op	       0 B/op	       0 allocs/op
 ```
 
-## SM4
+## SM4 symmetric encryption
 
-TODO
+### Usage
+
+```go
+package main
+
+import "github.com/rongzer/gm/sm4"
+
+func main() {
+    pwd := []byte("1234567890abcdef")
+    c, err := sm4.NewCipher(pwd)
+    if err != nil {
+        panic(err)
+    }
+    // 加密
+    cipherText := make([]byte, 16)
+    c.Encrypt(cipherText, []byte("x0x1x2x3x4x5x6x7"))
+    println(cipherText)
+    // 解密
+    plainText := make([]byte, 16)
+    c.Decrypt(plainText, cipherText)
+    println(plainText)
+}
+
+```
+
+### Performance
+
+- Encrypt
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/rongzer/gm/sm4
+BenchmarkSM4Encrypt
+BenchmarkSM4Encrypt/aes
+BenchmarkSM4Encrypt/aes-8         	 3961458	       276 ns/op	     448 B/op	       4 allocs/op
+BenchmarkSM4Encrypt/rongzer-sm4
+BenchmarkSM4Encrypt/rongzer-sm4-8 	 2549397	       456 ns/op	     128 B/op	       1 allocs/op
+BenchmarkSM4Encrypt/mixbee-sm4
+BenchmarkSM4Encrypt/mixbee-sm4-8  	 1639929	       737 ns/op	     128 B/op	       1 allocs/op
+BenchmarkSM4Encrypt/tjfoc-sm4
+BenchmarkSM4Encrypt/tjfoc-sm4-8   	 1650428	       723 ns/op	     240 B/op	       4 allocs/op
+```
+
+- Decrypt
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/rongzer/gm/sm4
+BenchmarkSM4Decrypt
+BenchmarkSM4Decrypt/aes
+BenchmarkSM4Decrypt/aes-8         	 4316817	       268 ns/op	     448 B/op	       4 allocs/op
+BenchmarkSM4Decrypt/rongzer-sm4
+BenchmarkSM4Decrypt/rongzer-sm4-8 	 2668842	       444 ns/op	     128 B/op	       1 allocs/op
+BenchmarkSM4Decrypt/mixbee-sm4
+BenchmarkSM4Decrypt/mixbee-sm4-8  	 1612585	       739 ns/op	     128 B/op	       1 allocs/op
+BenchmarkSM4Decrypt/tjfoc-sm4
+BenchmarkSM4Decrypt/tjfoc-sm4-8   	 1649646	       731 ns/op	     240 B/op	       4 allocs/op
+```
