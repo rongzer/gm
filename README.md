@@ -8,9 +8,72 @@ Copyright Jiangsu Rongzer Information Technology Co., Ltd. 2020 All Rights Reser
 
 版权所有 江苏荣泽信息科技股份有限公司
 
-## SM2
+## SM2 asymmetric encryption
 
-TODO
+## Usage
+
+```go
+package main
+
+import "github.com/rongzer/gm/sm2"
+
+func main() {
+    msg := []byte("test message 123012301230")
+    // 创建公私钥
+    priKey, _ := sm2.GenerateKey()
+
+    // 签名
+    r, s, err := sm2.Sign(priKey, msg)
+    if err != nil {
+    	panic(err)
+    }
+    
+    // 验签
+    if !sm2.Verify(&priKey.PublicKey, msg, r, s) {
+    	panic(err)
+    }
+}
+```
+
+### Performance
+
+- Sign
+
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/rongzer/gm/sm2
+BenchmarkSM2Sign
+BenchmarkSM2Sign/ecdsa
+BenchmarkSM2Sign/ecdsa-8         	   35288	     32990 ns/op	    2689 B/op	      32 allocs/op
+BenchmarkSM2Sign/rongzer-sm2
+BenchmarkSM2Sign/rongzer-sm2-8   	   31092	     37520 ns/op	    4604 B/op	      62 allocs/op
+BenchmarkSM2Sign/flyinox-sm2
+BenchmarkSM2Sign/flyinox-sm2-8   	     444	   2787993 ns/op	  868626 B/op	    9264 allocs/op
+BenchmarkSM2Sign/mixbee-sm2
+BenchmarkSM2Sign/mixbee-sm2-8    	   28002	     43236 ns/op	    4722 B/op	      67 allocs/op
+BenchmarkSM2Sign/tjfoc-sm2
+BenchmarkSM2Sign/tjfoc-sm2-8     	    3193	    362459 ns/op	    5731 B/op	      79 allocs/op
+```
+
+- Verify
+
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/rongzer/gm/sm2
+BenchmarkSM2Verify
+BenchmarkSM2Verify/ecdsa
+BenchmarkSM2Verify/ecdsa-8         	   10000	    100811 ns/op	     928 B/op	      16 allocs/op
+BenchmarkSM2Verify/rongzer-sm2
+BenchmarkSM2Verify/rongzer-sm2-8   	   10000	    111609 ns/op	    3729 B/op	      33 allocs/op
+BenchmarkSM2Verify/flyinox-sm2
+BenchmarkSM2Verify/flyinox-sm2-8   	     234	   5148109 ns/op	 1773310 B/op	   18892 allocs/op
+BenchmarkSM2Verify/mixbee-sm2
+BenchmarkSM2Verify/mixbee-sm2-8    	   10000	    119324 ns/op	    3763 B/op	      36 allocs/op
+BenchmarkSM2Verify/tjfoc-sm2
+BenchmarkSM2Verify/tjfoc-sm2-8     	     590	   2134330 ns/op	   82878 B/op	    1690 allocs/op
+```
 
 ## SM3 hash algorithm
 
